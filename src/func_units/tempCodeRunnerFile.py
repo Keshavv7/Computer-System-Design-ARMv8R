@@ -1,0 +1,1 @@
+from amaranth.sim import *
