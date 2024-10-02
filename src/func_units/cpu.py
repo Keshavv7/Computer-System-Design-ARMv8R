@@ -1,1 +1,1 @@
-import amaranth as *
+from amaranth import *
