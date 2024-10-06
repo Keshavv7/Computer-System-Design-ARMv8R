@@ -15,6 +15,6 @@ class IntMultiplier(Elaboratable):
         inter = Signal(2*self.bits)
         m = Module()
         m.d.comb += inter.eq(self.x*self.y)
-        m.d.comb += self.rslt.eq(inter[self.bits:])
-        m.d.comb += self.overflow.eq(inter[:self.bits].any())
+        m.d.comb += self.rslt.eq(inter[:self.bits])
+        m.d.comb += self.overflow.eq(inter[self.bits:].any())
         return m

@@ -17,8 +17,8 @@ class IntAdder(Elaboratable):
         m = Module()
         inter = Signal(self.bits+1)
         m.d.comb += inter.eq(self.x + self.y)
-        m.d.comb += self.overflow.eq(inter[0])
-        m.d.comb += self.rslt.eq(inter[1:])
+        m.d.comb += self.overflow.eq(inter[self.bits])
+        m.d.comb += self.rslt.eq(inter[:self.bits])
 
         return m
 
