@@ -32,7 +32,7 @@ jobs:
     - name: Install Yosys
       run: |
         sudo apt-get update
-        sude apt-get install yosys
+        sudo apt-get install yosys
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
