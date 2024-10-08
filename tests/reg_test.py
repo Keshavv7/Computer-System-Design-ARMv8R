@@ -1,7 +1,12 @@
 from amaranth import *
 from amaranth.sim import Simulator
+import os
+import sys
+import pytest
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                                '../src/')))
 
-from ..src.mem.reg import RegisterFile
+from mem.reg import RegisterFile
 
 def test_register_file():
     # Write to register 1
