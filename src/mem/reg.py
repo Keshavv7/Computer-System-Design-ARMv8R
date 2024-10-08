@@ -1,3 +1,5 @@
+from amaranth import *
+
 class RegisterFile(Elaboratable):
     def __init__(self, num_regs=16, width=32):
         # Parameterized number of registers and width
