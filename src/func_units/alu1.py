@@ -28,11 +28,11 @@ class ALU(Component):
             with m.Case(0b0101):  # Logical Shift Left (LSL)
                 m.d.comb += result.eq(self.a << (self.b[:5]))  # Limit shift to 0-31
             with m.Case(0b0110):  # Logical Shift Right (LSR)
-                m.d.comb += result.eq(self.a >> (self.b[:5]))
+                m.d.comb += result.eq(self.a.as_unsigned() >> (self.b[:5]))
             with m.Case(0b0111):  # Arithmetic Shift Right (ASR)
                 m.d.comb += result.eq(self.a.as_signed() >> (self.b[:5]))
 
         # Assign the result to the output
-        m.d.comb += self.o.eq(result)
+        m.d.comb += self.o.eq(result.as_signed())
 
         return m
