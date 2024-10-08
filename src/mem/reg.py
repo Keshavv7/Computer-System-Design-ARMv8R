@@ -1,29 +1,41 @@
 from amaranth import *
 
-class RegisterMemory(Elaboratable):
-    def __init__(self, width, depth):
-        # Parameters for memory width (bit width) and depth (number of registers)
+class RegisterFile(Elaboratable):
+    def __init__(self, num_regs=16, width=32):
+        self.num_regs = num_regs
         self.width = width
-        self.depth = depth
-        
-        # Memory inputs and outputs
-        self.addr = Signal(range(depth))   # Address to read/write
-        self.data_in = Signal(width)       # Data to be written to memory
-        self.data_out = Signal(width)      # Data read from memory
-        self.write_en = Signal()           # Write enable signal (1 = write, 0 = read)
-    
+
+        self.read_addr1 = Signal(range(num_regs))  # Address for the first read port
+        self.read_addr2 = Signal(range(num_regs))  # Address for the second read port
+        self.write_addr = Signal(range(num_regs))  # Address for the write port
+        self.write_data = Signal(width)            # Data to write
+        self.write_enable = Signal()               # Write enable signal
+
+        self.read_data1 = Signal(width)            # Data read from the first port
+        self.read_data2 = Signal(width)            # Data read from the second port
+
+        self.regs = [Signal(width, reset=0) for _ in range(num_regs)]
+
     def elaborate(self, platform):
         m = Module()
-        
-        # Create an array of registers, initialized to 0
-        memory = [Signal(self.width, reset=0) for _ in range(self.depth)]
-        
-        # Define synchronous write behavior (only writes if write_en is high)
-        with m.If(self.write_en):
-            # Write the input data to the selected memory register
-            m.d.sync += memory[self.addr].eq(self.data_in)
-        
-        # Define combinational read behavior (always reads from memory)
-        m.d.comb += self.data_out.eq(memory[self.addr])
-        
+
+        # Combinational read logic using Switch and Case
+        with m.Switch(self.read_addr1):
+            for i in range(self.num_regs):
+                with m.Case(i):
+                    m.d.comb += self.read_data1.eq(self.regs[i])
+
+        with m.Switch(self.read_addr2):
+            for i in range(self.num_regs):
+                with m.Case(i):
+                    m.d.comb += self.read_data2.eq(self.regs[i])
+
+        # Synchronous write logic
+        with m.If(self.write_enable):
+            # Using a multiplexer to determine which register to write to
+            with m.Switch(self.write_addr):
+                for i in range(self.num_regs):
+                    with m.Case(i):
+                        m.d.sync += self.regs[i].eq(self.write_data)
+
         return m
