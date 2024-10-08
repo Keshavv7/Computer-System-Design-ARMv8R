@@ -1,38 +1,29 @@
 from amaranth import *
 
-class RegisterFile(Elaboratable):
-    def __init__(self, num_regs=16, width=32):
-        self.num_regs = num_regs
+class RegisterMemory(Elaboratable):
+    def __init__(self, width, depth):
+        # Parameters for memory width (bit width) and depth (number of registers)
         self.width = width
-
-        self.read_addr1 = Signal(range(num_regs))
-        self.read_addr2 = Signal(range(num_regs))
-        self.write_addr = Signal(range(num_regs))
-        self.write_data = Signal(width)
-        self.write_enable = Signal()
-
-        self.read_data1 = Signal(width)
-        self.read_data2 = Signal(width)
-
-        self.regs = [Signal(width, reset=0) for _ in range(num_regs)]
-
+        self.depth = depth
+        
+        # Memory inputs and outputs
+        self.addr = Signal(range(depth))   # Address to read/write
+        self.data_in = Signal(width)       # Data to be written to memory
+        self.data_out = Signal(width)      # Data read from memory
+        self.write_en = Signal()           # Write enable signal (1 = write, 0 = read)
+    
     def elaborate(self, platform):
         m = Module()
-
-        # Combinational read logic using Case statements
-        with m.Switch(self.read_addr1):
-            for i in range(self.num_regs):
-                with m.Case(i):
-                    m.d.comb += self.read_data1.eq(self.regs[i])
-
-        with m.Switch(self.read_addr2):
-            for i in range(self.num_regs):
-                with m.Case(i):
-                    m.d.comb += self.read_data2.eq(self.regs[i])
-
-        # Synchronous write logic
-        with m.If(self.write_enable):
-            m.d.sync += self.regs[self.write_addr].eq(self.write_data)
-
+        
+        # Create an array of registers, initialized to 0
+        memory = [Signal(self.width, reset=0) for _ in range(self.depth)]
+        
+        # Define synchronous write behavior (only writes if write_en is high)
+        with m.If(self.write_en):
+            # Write the input data to the selected memory register
+            m.d.sync += memory[self.addr].eq(self.data_in)
+        
+        # Define combinational read behavior (always reads from memory)
+        m.d.comb += self.data_out.eq(memory[self.addr])
+        
         return m
-
