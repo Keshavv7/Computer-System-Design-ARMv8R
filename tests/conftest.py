@@ -13,8 +13,7 @@ def ctx():
     dut = ALU()
 
     # Setup the simulator with the DUT
-    sim = Simulator(dut)
-    sim.add_clock(1e-6)  # Add a 1 MHz clock
+    sim = Simulator(dut)  # Add a 1 MHz clock
 
     # Return the simulator as the context
     return sim
