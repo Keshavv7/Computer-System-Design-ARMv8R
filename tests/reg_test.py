@@ -1,7 +1,7 @@
 from amaranth import *
 from amaranth.sim import Simulator
 
-from mem.reg import RegisterFile
+from ..mem.reg import RegisterFile
 
 def test_register_file():
     # Write to register 1
