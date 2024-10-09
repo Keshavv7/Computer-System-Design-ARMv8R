@@ -17,3 +17,5 @@ def ctx():
 
     # Return the simulator as the context
     return sim
+
+pytest

@@ -13,7 +13,7 @@ class ALU(Component):
         m = Module()
 
         # ALU result signal
-        result = Signal(32)
+        result = Signal(32).as_signed()
         carry_out = Signal()
 
         # Define operations
@@ -76,13 +76,13 @@ class ALU(Component):
 
             # Shift instructions
             with m.Case(0b001111):  # LSL (Logical Shift Left)
-                m.d.comb += result.eq(self.a << (self.b[:5]))  # Limit shift to 0-31
+                m.d.comb += result.eq(self.a << (self.b[:5].as_unsigned()))  # Limit shift to 0-31
             with m.Case(0b010000):  # LSR (Logical Shift Right)
-                m.d.comb += result.eq(self.a >> (self.b[:5]))
+                m.d.comb += result.eq(self.a >> (self.b[:5].as_unsigned()))
             with m.Case(0b010001):  # ASR (Arithmetic Shift Right)
-                m.d.comb += result.eq(self.a.as_signed() >> (self.b[:5]))
+                m.d.comb += result.eq(self.a.as_signed() >> (self.b[:5].as_unsigned()))
             with m.Case(0b010010):  # ROR (Rotate Right)
-                m.d.comb += result.eq((self.a >> self.b[:5]) | (self.a << (32 - self.b[:5])))
+                m.d.comb += result.eq((self.a >> self.b[:5].as_unsigned()) | (self.a << (32 - self.b[:5]).as_unsigned()))
             with m.Case(0b010011):  # RRX (Rotate Right with Extend)
                 m.d.comb += result.eq((self.carry_in << 31) | (self.a >> 1))
 
@@ -102,8 +102,8 @@ class ALU(Component):
 
         # Set the output result and carry_out
         m.d.comb += [
-            self.o.eq(result),
-            self.carry_out.eq(carry_out)
+            self.o.eq(result.as_signed()),
+            self.carry_out.eq(carry_out.as_signed())
         ]
 
         return m
