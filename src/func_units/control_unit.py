@@ -9,7 +9,7 @@ class ControlUnit(Component):
     def elaborate(self, platform):
         m = Module()
 
-        # Extract fields from the instruction (assuming a simplified instruction format)
+        # Extract fields from the instruction 
         opcode = self.instruction[26:32]  # Last 6 bits as opcode
 
         # Control signals (defaults)
