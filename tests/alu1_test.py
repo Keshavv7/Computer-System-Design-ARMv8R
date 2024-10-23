@@ -6,9 +6,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                 '../src/')))
 from func_units.alu1 import ALU
 
+alu = ALU()
 # Testbench for ALU
 async def testbench(ctx):
-    alu = ALU()
 
     # Test ADD
     ctx.set(alu.a, 5)
@@ -49,7 +49,7 @@ async def testbench(ctx):
     ctx.set(alu.b, 2)           # Shift right by 2
     ctx.set(alu.alu_ctrl, 0b010001)  # ASR
     await ctx.delay(1e-6)
-    #assert ctx.get(alu.o) == 0b11111100, f"ASR failed, expected 0b11111100, got {ctx.get(alu.o)}" TODO: Fix ASR
+    #assert ctx.get(alu.o) == 0b11111100, f"ASR failed, expected 0b11111100, got {ctx.get(alu.o)}" #TODO: Fix ASR
 
     # Test Rotate Right (ROR)
     ctx.set(alu.a, 0b1100)  # 12
@@ -63,7 +63,7 @@ async def testbench(ctx):
     ctx.set(alu.carry_in, 1)  # Carry input
     ctx.set(alu.alu_ctrl, 0b010011)  # RRX
     await ctx.delay(1e-6)
-    #assert ctx.get(alu.o) == 0b1110, f"RRX failed, expected 0b1110, got {ctx.get(alu.o)}" TODO Fix this too
+    #assert ctx.get(alu.o) == 0b1110, f"RRX failed, expected 0b1110, got {ctx.get(alu.o)}" #TODO Fix this too
 
 # Create and run the simulation
 alu = ALU()  # Instantiate ALU
