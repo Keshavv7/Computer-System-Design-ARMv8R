@@ -2,11 +2,11 @@ from amaranth import *
 from amaranth.lib.wiring import Component, In, Out
 
 class ALU(Component):
-    a: In(32)       # Operand 1 (rn)
-    b: In(32)       # Operand 2 (op2)
+    a: In(signed(32))       # Operand 1 (rn)
+    b: In(signed(32))       # Operand 2 (op2)
     alu_ctrl: In(6) # Control signal to choose operation (6 bits to cover all instructions)
     carry_in: In(1) # Carry input for ADC, SBC, etc.
-    o: Out(32)      # self.o of ALU operation
+    o: Out(signed(32))      # self.o of ALU operation
     carry_out: Out(1) # Carry output
 
     def elaborate(self, platform):
@@ -77,8 +77,8 @@ class ALU(Component):
                 m.d.comb += self.o.eq(self.a.as_signed() >> (self.b[:5].as_unsigned()))
             with m.Case(0b010010):  # ROR (Rotate Right)
                 m.d.comb += self.o.eq((self.a >> self.b[:5].as_unsigned()) | (self.a << (32 - self.b[:5]).as_unsigned()))
-            with m.Case(0b010011):  # RRX (Rotate Right with Extend)
-                m.d.comb += self.o.eq((self.carry_in << 31) | (self.a >> 1))
+            #with m.Case(0b010011):  # RRX (Rotate Right with Extend)
+            #    m.d.comb += self.o.eq((self.carry_in << 31) | (self.a >> 1))
 
             # Compare instructions (CMP and CMN)
             with m.Case(0b010100):  # CMP (Compare: rn - op2)
