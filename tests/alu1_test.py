@@ -8,7 +8,7 @@ from func_units.alu1 import ALU
 
 # Testbench for ALU
 async def testbench(ctx):
-    #alu = ALU()
+    alu = ALU()
 
     # Test ADD
     ctx.set(alu.a, 5)
