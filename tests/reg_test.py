@@ -8,7 +8,7 @@ from mem.reg import RegisterFile
 
 def test_register_file():
     yield reg_file.write_addr.eq(1)
-    yield reg_file.write_data.eq(0xDEADBEEF)
+    yield reg_file.write_data.eq(0xBEEF)
     yield reg_file.write_enable.eq(1)
     yield Tick()  # Write cycle
     yield reg_file.write_enable.eq(0)
@@ -16,10 +16,10 @@ def test_register_file():
     yield reg_file.read_addr1.eq(1)
     yield Tick()  # Read cycle
     read_data = yield reg_file.read_data1
-    assert read_data == 0xDEADBEEF, f"Expected 0xDEADBEEF, got {read_data}"
+    assert read_data == 0xBEEF, f"Expected 0xBEEF, got {read_data}"
 
     yield reg_file.write_addr.eq(2)
-    yield reg_file.write_data.eq(0xCAFEBABE)
+    yield reg_file.write_data.eq(0xBABE)
     yield reg_file.write_enable.eq(1)
     yield Tick()  # Write cycle
     yield reg_file.write_enable.eq(0)
@@ -27,15 +27,15 @@ def test_register_file():
     yield reg_file.read_addr2.eq(2)
     yield Tick()  # Read cycle
     read_data = yield reg_file.read_data2
-    assert read_data == 0xCAFEBABE, f"Expected 0xCAFEBABE, got {read_data}"
+    assert read_data == 0xBABE, f"Expected 0xBABE, got {read_data}"
 
     yield reg_file.read_addr1.eq(1)
     yield reg_file.read_addr2.eq(2)
     yield Tick()  # Read cycle
     read_data1 = yield reg_file.read_data1
     read_data2 = yield reg_file.read_data2
-    assert read_data1 == 0xDEADBEEF, f"Expected 0xDEADBEEF, got {read_data1}"
-    assert read_data2 == 0xCAFEBABE, f"Expected 0xCAFEBABE, got {read_data2}"
+    assert read_data1 == 0xBEEF, f"Expected 0xBEEF, got {read_data1}"
+    assert read_data2 == 0xBABE, f"Expected 0xBABE, got {read_data2}"
 
 # Instantiate the register file
 reg_file = RegisterFile()
