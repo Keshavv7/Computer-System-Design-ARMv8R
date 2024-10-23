@@ -38,7 +38,7 @@ def test_register_file():
     assert read_data2 == 0xCAFEBABE, f"Expected 0xCAFEBABE, got {read_data2}"
 
 # Instantiate the register file
-reg_file = RegisterFile(num_regs=16, width=32)
+reg_file = RegisterFile()
 
 # Create a simulator
 sim = Simulator(reg_file)

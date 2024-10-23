@@ -1,41 +1,45 @@
 from amaranth import *
+from amaranth.lib.wiring import Component, In, Out
+from amaranth.lib.data import ArrayLayout
 
-class RegisterFile(Elaboratable):
-    def __init__(self, num_regs=16, width=32):
-        self.num_regs = num_regs
-        self.width = width
+class RegisterFile(Component):
+    read_addr1:   In(16)  # Address for the first read port
+    read_addr2:   In(16)  # Address for the second read port
+    write_addr:   In(16)  # Address for the write port
+    write_data:   In(32)  # Data to write
+    write_enable: In(1)   # Write enable signal
 
-        self.read_addr1 = Signal(range(num_regs))  # Address for the first read port
-        self.read_addr2 = Signal(range(num_regs))  # Address for the second read port
-        self.write_addr = Signal(range(num_regs))  # Address for the write port
-        self.write_data = Signal(width)            # Data to write
-        self.write_enable = Signal()               # Write enable signal
-
-        self.read_data1 = Signal(width)            # Data read from the first port
-        self.read_data2 = Signal(width)            # Data read from the second port
-
-        self.regs = [Signal(width, reset=0) for _ in range(num_regs)]
+    read_data1:   Out(32)            # Data read from the first port
+    read_data2:   Out(32)            # Data read from the second port
 
     def elaborate(self, platform):
+        regs = Array([Signal(32)]*16)
         m = Module()
 
         # Combinational read logic using Switch and Case
         with m.Switch(self.read_addr1):
-            for i in range(self.num_regs):
+            for i in range(16):
                 with m.Case(i):
-                    m.d.comb += self.read_data1.eq(self.regs[i])
+                    m.d.comb += self.read_data1.eq(regs[i])
 
         with m.Switch(self.read_addr2):
-            for i in range(self.num_regs):
+            for i in range(16):
                 with m.Case(i):
-                    m.d.comb += self.read_data2.eq(self.regs[i])
+                    m.d.comb += self.read_data2.eq(regs[i])
 
         # Synchronous write logic
         with m.If(self.write_enable):
             # Using a multiplexer to determine which register to write to
             with m.Switch(self.write_addr):
-                for i in range(self.num_regs):
+                for i in range(16):
                     with m.Case(i):
-                        m.d.sync += self.regs[i].eq(self.write_data)
+                        m.d.sync += regs[i].eq(self.write_data)
 
         return m
+
+if __name__ == "__main__":
+    from amaranth.back import verilog
+    alu = RegisterFile()
+    print(verilog.convert(alu, ports=[alu.read_addr1, alu.read_addr2, alu.write_addr, alu.write_data, 
+                                      alu.write_enable, alu.read_data1, alu.read_data2], 
+                                      emit_src=False))
