@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                 '../src/')))
-from func_units.alu1 import ALU
+from func_units.alu import ALU
 
 alu = ALU()
 # Testbench for ALU
