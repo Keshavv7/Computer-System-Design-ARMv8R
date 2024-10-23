@@ -49,7 +49,7 @@ async def testbench(ctx):
     ctx.set(alu.b, 2)           # Shift right by 2
     ctx.set(alu.alu_ctrl, 0b010001)  # ASR
     await ctx.delay(1e-6)
-    assert ctx.get(alu.o) == -4, f"ASR failed, expected 0b11111100, got {ctx.get(alu.o)}" #TODO: Fix ASR
+    assert ctx.get(alu.o) == -4, f"ASR failed, expected -4, got {ctx.get(alu.o)}" #TODO: Fix ASR
 
     # Test Rotate Right (ROR)
     ctx.set(alu.a, 0b1100)  # 12
