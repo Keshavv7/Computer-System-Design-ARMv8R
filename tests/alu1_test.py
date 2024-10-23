@@ -71,4 +71,5 @@ sim = Simulator(alu)
 #sim.add_clock(1e-6)  # Add a clock with a period of 1 microsecond
 sim.add_testbench(testbench)  # Add testbench
 sim.run()
+print("alu tests passed successfully!")
 
