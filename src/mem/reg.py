@@ -39,7 +39,7 @@ class RegisterFile(Component):
 
 if __name__ == "__main__":
     from amaranth.back import verilog
-    alu = RegisterFile()
-    print(verilog.convert(alu, ports=[alu.read_addr1, alu.read_addr2, alu.write_addr, alu.write_data, 
-                                      alu.write_enable, alu.read_data1, alu.read_data2], 
+    rf = RegisterFile()
+    print(verilog.convert(rf, ports=[rf.read_addr1, rf.read_addr2, rf.write_addr, rf.write_data, 
+                                      rf.write_enable, rf.read_data1, rf.read_data2], 
                                       emit_src=False))
