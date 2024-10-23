@@ -13,50 +13,71 @@ async def testbench(ctx):
     # Test ADD
     ctx.set(alu.a, 5)
     ctx.set(alu.b, 3)
-    ctx.set(alu.alu_ctrl, 0b000000)  # ADD
+    ctx.set(alu.alu_ctrl, 0)  # ADD
     await ctx.delay(1e-6)
     assert ctx.get(alu.o) == 8, f"ADD failed, expected 8, got {ctx.get(alu.o)}"
 
     # Test SUB
     ctx.set(alu.a, 10)
     ctx.set(alu.b, 4)
-    ctx.set(alu.alu_ctrl, 0b000010)  # SUB
+    ctx.set(alu.alu_ctrl, 1)  # SUB
     await ctx.delay(1e-6)
     assert ctx.get(alu.o) == 6, f"SUB failed, expected 6, got {ctx.get(alu.o)}"
 
     # Test CMP (a - b)
     ctx.set(alu.a, 10)
     ctx.set(alu.b, 5)
-    ctx.set(alu.alu_ctrl, 0b010100)  # CMP
+    ctx.set(alu.alu_ctrl, 1)  # CMP
     await ctx.delay(1e-6)
     assert ctx.get(alu.o) == 5, f"CMP failed, expected 5, got {ctx.get(alu.o)}"
 
     ctx.set(alu.a, 0b0001)  # 1
     ctx.set(alu.b, 2)       # Shift left by 2
-    ctx.set(alu.alu_ctrl, 0b001111)  # LSL
+    ctx.set(alu.alu_ctrl, 7)  # LSL
     await ctx.delay(1e-6)
     assert ctx.get(alu.o) == 0b0100, f"LSL failed, expected 0b0100, got {ctx.get(alu.o)}"
-
-    # Test Logical Shift Right (LSR)
-    ctx.set(alu.a, 0b1000)  # 8
-    ctx.set(alu.b, 2)       # Shift right by 2
-    ctx.set(alu.alu_ctrl, 0b010000)  # LSR
-    await ctx.delay(1e-6)
-    assert ctx.get(alu.o) == 0b0010, f"LSR failed, expected 0b0010, got {ctx.get(alu.o)}"
 
     # Test Arithmetic Shift Right (ASR)
     ctx.set(alu.a, -16)  
     ctx.set(alu.b, 2)           # Shift right by 2
-    ctx.set(alu.alu_ctrl, 0b010001)  # ASR
+    ctx.set(alu.alu_ctrl, 8)  # ASR
     await ctx.delay(1e-6)
-    assert ctx.get(alu.o) == -4, f"ASR failed, expected 0b11111100, got {ctx.get(alu.o)}" #TODO: Fix ASR
+    assert ctx.get(alu.o) == -4, f"ASR failed, expected -4, got {ctx.get(alu.o)}"
 
-    # Test Rotate Right (ROR)
-    ctx.set(alu.a, 0b1100)  # 12
-    ctx.set(alu.b, 2)       # Rotate right by 2
-    ctx.set(alu.alu_ctrl, 0b010010)  # ROR
+    # Test MUL
+    ctx.set(alu.a, 4)  
+    ctx.set(alu.b, -2)
+    ctx.set(alu.alu_ctrl, 2)
     await ctx.delay(1e-6)
-    assert ctx.get(alu.o) == 0b0011, f"ROR failed, expected 0b0011, got {ctx.get(alu.o)}"
+    assert ctx.get(alu.o) == -8, f"MUL failed, expected -8, got {ctx.get(alu.o)}"
+
+    # Test DIV
+    ctx.set(alu.a, -9)  
+    ctx.set(alu.b, 3)           
+    ctx.set(alu.alu_ctrl, 3)
+    await ctx.delay(1e-6)
+    assert ctx.get(alu.o) == -3, f"DIV failed, expected -3, got {ctx.get(alu.o)}"
+
+    # Test AND
+    ctx.set(alu.a, -1)  
+    ctx.set(alu.b, 2)           # Shift right by 2
+    ctx.set(alu.alu_ctrl, 4)  # ASR
+    await ctx.delay(1e-6)
+    assert ctx.get(alu.o) == 2, f"AND failed, expected 2, got {ctx.get(alu.o)}"
+
+    # Test ORR
+    ctx.set(alu.a, -1)  
+    ctx.set(alu.b, 2)           # Shift right by 2
+    ctx.set(alu.alu_ctrl, 5)  # ASR
+    await ctx.delay(1e-6)
+    assert ctx.get(alu.o) == -1, f"ORR failed, expected -1, got {ctx.get(alu.o)}"
+
+    # Test EOR
+    ctx.set(alu.a, -1)  
+    ctx.set(alu.b, 1)           # Shift right by 2
+    ctx.set(alu.alu_ctrl, 6)  # ASR
+    await ctx.delay(1e-6)
+    assert ctx.get(alu.o) == -2, f"EOR failed, expected -2, got {ctx.get(alu.o)}"
 
 # Create and run the simulation
 # Instantiate ALU
