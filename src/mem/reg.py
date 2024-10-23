@@ -20,12 +20,12 @@ class RegisterFile(Component):
         with m.Switch(self.read_addr1):
             for i in range(16):
                 with m.Case(i):
-                    m.d.comb += self.read_data1.eq(regs[i])
+                    m.d.sync += self.read_data1.eq(regs[i])
 
         with m.Switch(self.read_addr2):
             for i in range(16):
                 with m.Case(i):
-                    m.d.comb += self.read_data2.eq(regs[i])
+                    m.d.sync += self.read_data2.eq(regs[i])
 
         # Synchronous write logic
         with m.If(self.write_enable):
