@@ -4,8 +4,7 @@ from amaranth.lib.wiring import Component, In, Out
 class ALU(Component):
     a: In(signed(32))       # Operand 1 (rn)
     b: In(signed(32))       # Operand 2 (op2)
-    alu_ctrl: In(6) # Control signal to choose operation (6 bits to cover all instructions)
-    carry_in: In(1) # Carry input for ADC, SBC, etc.
+    alu_ctrl: In(6)         # Control signal to choose operation (6 bits to cover all instructions)
     o: Out(signed(32))      # self.o of ALU operation
     nzc: Out(3) # Carry output
 
