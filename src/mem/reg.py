@@ -13,7 +13,7 @@ class RegisterFile(Component):
     read_data2:   Out(32)            # Data read from the second port
 
     def elaborate(self, platform):
-        regs = Array([Signal(32)]*16)
+        regs = [Signal(32) for _ in range(16)]
         m = Module()
 
         # Combinational read logic using Switch and Case
