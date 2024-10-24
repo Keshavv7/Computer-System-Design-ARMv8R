@@ -23,3 +23,11 @@ class Decoder(Component):
         ]
 
         return m
+
+
+if __name__ == "__main__":
+    from amaranth.back import verilog
+    dc = Decoder()
+    print(verilog.convert(dc, ports=[dc.instruction, dc.itype, dc.u_ctrl, dc.rd_addr, 
+                                      dc.rm_addr, dc.is_imm, dc.value], 
+                                      emit_src=False))

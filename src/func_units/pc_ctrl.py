@@ -51,3 +51,11 @@ class PCControl(Component):
                     m.d.comb += self.PCOut.eq(PCDef)
         
         return m
+    
+if __name__ == "__main__":
+    from amaranth.back import verilog
+    pcc = PCControl()
+    print(verilog.convert(pcc, ports=[pcc.PCIn, pcc.target, pcc.CPSR, pcc.u_ctrl, 
+                                      pcc.PCOut], 
+                                      emit_src=False))
+
