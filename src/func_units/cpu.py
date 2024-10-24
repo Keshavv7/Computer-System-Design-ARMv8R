@@ -10,6 +10,11 @@ from func_units.decoder import Decoder
 from func_units.pc_ctrl import PCControl
 from mem.reg import RegisterFile
 
+pcc = PCControl()
+dec = Decoder()
+alu = ALU()
+rf = RegisterFile()
+
 class CPU(Component):
     PCLine: Out(32)
     Instruction: In(32)
@@ -23,10 +28,6 @@ class CPU(Component):
         m = Module()
         PC = Signal(32)
         CPSR = Signal(3)
-        m.submodules.pcc = pcc = PCControl()
-        m.submodules.dec = dec = Decoder()
-        m.submodules.alu = alu = ALU()
-        m.submodules.rf = rf = RegisterFile()
         m.d.sync += [pcc.PCIn.eq(PC), self.PCLine.eq(pcc.PCOut), 
                      PC.eq(pcc.PCOut), pcc.CPSR.eq(CPSR)]
         
