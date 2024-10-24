@@ -5,7 +5,7 @@ from amaranth.lib.data import ArrayLayout
 class RegisterFile(Component):
     read_addr1:   In(4)  # Address for the first read port
     read_addr2:   In(4)  # Address for the second read port
-    write_addr:   In(16)  # Address for the write port
+    write_addr:   In(4)  # Address for the write port
     write_data:   In(32)  # Data to write
     write_enable: In(1)   # Write enable signal
 
