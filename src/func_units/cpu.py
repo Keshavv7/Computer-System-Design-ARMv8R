@@ -43,15 +43,23 @@ class CPU(Component):
                 m.d.comb += rf.read_addr2.eq(dec.value[:-4])
                 m.d.comb += rval2.eq(rf.read_data2)
 
-            m.d.comb += rf.write_addr.eq(dec.rd_addr)
+            
             m.d.comb += alu.a.eq(rval)
             m.d.comb += alu.b.eq(rval2)
+            m.d.comb += alu.op.eq(dec.u_ctrl)  
+            m.d.comb += rf.write_addr.eq(dec.rd_addr)
             m.d.comb += rf.write_data.eq(alu.o)
             
+
+            # PC update 
+        with m.If(dec.itype == 2):  
+            with m.If(dec.is_imm):
+                m.d.sync += PC.eq(PC + dec.value)  
+            with m.Else():
+                m.d.comb += rf.read_addr1.eq(dec.rm_addr)
+                m.d.sync += PC.eq(rf.read_data1)  
+        with m.Else():  
+            m.d.sync += PC.eq(PC + 4)  
+
         return m
 
-    
-if __name__ == "__main__":
-    from amaranth.back import verilog
-    alu = ALU()
-    print(verilog.convert(alu, ports=[alu.a, alu.b, alu.alu_ctrl, alu.alu_ctrl, alu.nzc, alu.o], emit_src=False))
