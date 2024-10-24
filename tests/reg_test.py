@@ -38,6 +38,8 @@ async def testbench_example2(ctx):
     await ctx.tick()  # Read cycle
     read_data2 = ctx.get(dut.read_data2)
     assert read_data2 == 0xBABE, f"Expected 0xBABE, got {read_data2}"
+    read_data1 = ctx.get(dut.read_data1)
+    assert read_data1 == 0xBEEF, f"Expected 0xBEEF, got {read_data1}"
     await ctx.tick()
 
     # Check that both reads are correct
