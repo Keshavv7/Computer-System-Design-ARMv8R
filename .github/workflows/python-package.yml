@@ -42,3 +42,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Make Verilog
+      run: |
+        make clean
+        make
