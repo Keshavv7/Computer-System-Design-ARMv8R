@@ -50,3 +50,8 @@ class CPU(Component):
             
         return m
 
+    
+if __name__ == "__main__":
+    from amaranth.back import verilog
+    alu = ALU()
+    print(verilog.convert(alu, ports=[alu.a, alu.b, alu.alu_ctrl, alu.alu_ctrl, alu.nzc, alu.o], emit_src=False))

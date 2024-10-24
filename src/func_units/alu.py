@@ -74,4 +74,4 @@ class ALU(Component):
 if __name__ == "__main__":
     from amaranth.back import verilog
     alu = ALU()
-    print(verilog.convert(alu, ports=[alu.a, alu.b, alu.alu_ctrl, alu.carry_in, alu.nzc, alu.o], emit_src=False))
+    print(verilog.convert(alu, ports=[alu.a, alu.b, alu.alu_ctrl, alu.alu_ctrl, alu.nzc, alu.o], emit_src=False))
