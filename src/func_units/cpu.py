@@ -46,7 +46,7 @@ class CPU(Component):
             
             m.d.comb += alu.a.eq(rval)
             m.d.comb += alu.b.eq(rval2)
-            m.d.comb += alu.op.eq(dec.u_ctrl)  
+            m.d.comb += alu.alu_ctrl.eq(dec.u_ctrl)  
             m.d.comb += rf.write_addr.eq(dec.rd_addr)
             m.d.comb += rf.write_data.eq(alu.o)
             
