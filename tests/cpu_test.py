@@ -27,3 +27,4 @@ sim = Simulator(cpu_sim)
 sim.add_testbench(testbench)  # Add the testbench
 sim.run()
 print("CPU tests passed successfully!")
+m
