@@ -13,19 +13,13 @@ class TestBench(Elaboratable):
         
         # Create input ports that we can control from the testbench
         self.instruction_in = Signal(32)
-        self.dw_enable_in = Signal()
-        self.daddr_in = Signal(32)
         
     def elaborate(self, platform):
         m = Module()
         m.submodules.cpu = self.cpu
 
         # Connect our controllable inputs to the CPU
-        m.d.comb += [
-            self.cpu.Instruction.eq(self.instruction_in),
-            self.cpu.DWEnable.eq(self.dw_enable_in),
-            self.cpu.DAddr.eq(self.daddr_in)
-        ]
+        m.d.comb += self.cpu.Instruction.eq(self.instruction_in)
         
         return m
 
@@ -36,8 +30,6 @@ def cpu_test():
     def process():
         # Set initial values
         yield cpu_tb.instruction_in.eq(0b00000001000000000000000000000001)
-        yield cpu_tb.dw_enable_in.eq(1)
-        yield cpu_tb.daddr_in.eq(0x00000000)
         
         # First clock cycle
         yield
