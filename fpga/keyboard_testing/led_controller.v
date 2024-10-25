@@ -10,7 +10,7 @@ module led_controller (
 );
 
     // Timer parameters for ~0.5 seconds (modify based on clock frequency)
-    parameter TIMER_LIMIT = 25_000_000; // For 50 MHz clock, half a second would need 25 million cycles
+    parameter TIMER_LIMIT = 62_500_000; // For 125MHz clock
 
     // State and timer declarations
     reg [24:0] timer;                   // 25-bit timer for 0.5 seconds
